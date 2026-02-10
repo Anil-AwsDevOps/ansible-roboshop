@@ -1,0 +1,37 @@
+- name: catalogue configure
+  hosts: catalogue
+  become: yes
+
+  tasks:
+
+  - name: disable nodejs
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+  
+  - name: install nodejs
+    ansible.builtin.dnf:
+      name: nodejs
+      state: present
+    
+  - name: 
+    ansible.builtin.user:
+          name: roboshop
+          comment: "roboshop system user"
+          system: true      # This flag designates it as a system user (lower UID, no default home/shell)
+          shell: /sbin/nologin # Assign a no-login shell for security
+          create_home: /app # Prevents creating a home directory
+          state: present
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /app
+      state: directory
+  
+  - name: Download the application archive
+    ansible.builtin.get_url:
+        url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+        dest: /tmp/catalogue.zip
+        
+  -  name: Extract foo.tgz into /var/lib/foo
+     ansible.builtin.unarchive:
+        src: /tmp/catalogue.zip
+        dest: /app
