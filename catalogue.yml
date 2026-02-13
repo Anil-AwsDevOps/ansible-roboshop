@@ -18,7 +18,7 @@
           comment: "roboshop system user"
           system: true      # This flag designates it as a system user (lower UID, no default home/shell)
           shell: /sbin/nologin # Assign a no-login shell for security
-          create_home: /app # Prevents creating a home directory
+          home: /app # Prevents creating a home directory
           state: present
 
   - name: Create a directory if it does not exist
