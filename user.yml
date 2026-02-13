@@ -47,8 +47,8 @@
       src: /tmp/user.zip
       dest: /app
 
-  - name: install npm 
-    ansible.community.npm:
+  - name: install dependencies
+    community.general.npm:
       path: /app
   
   - name: copy user service
